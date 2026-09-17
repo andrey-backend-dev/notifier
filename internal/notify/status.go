@@ -2,32 +2,32 @@ package notify
 
 import "fmt"
 
-type Status int8
+type Status byte
 
 const (
-	Unidentified Status = iota
-	Failed
-	Created
-	Delivering
-	Delivered
+	StatusUnidentified Status = iota
+	StatusFailed
+	StatusCreated
+	StatusDelivering
+	StatusDelivered
 	lastStatus
 )
 
 func (status Status) Valid() bool {
-	return status >= Failed && status < lastStatus
+	return status >= StatusFailed && status < lastStatus
 }
 
 func ParseStatus(status string) (Status, error) {
 	switch status {
 	case "failed":
-		return Failed, nil
+		return StatusFailed, nil
 	case "created":
-		return Created, nil
+		return StatusCreated, nil
 	case "delivering":
-		return Delivering, nil
+		return StatusDelivering, nil
 	case "delivered":
-		return Delivered, nil
+		return StatusDelivered, nil
 	default:
-		return Unidentified, fmt.Errorf("unknown status: %q", status)
+		return StatusUnidentified, fmt.Errorf("unknown status: %q", status)
 	}
 }

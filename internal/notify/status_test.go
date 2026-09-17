@@ -3,7 +3,7 @@ package notify
 import "testing"
 
 func TestParseStatus(t *testing.T) {
-	expected := Delivered
+	expected := StatusDelivered
 
 	if result, err := ParseStatus("delivered"); err != nil || expected != result {
 		if err != nil {
@@ -14,7 +14,7 @@ func TestParseStatus(t *testing.T) {
 }
 
 func TestParseStatusUnidentified(t *testing.T) {
-	expected := Unidentified
+	expected := StatusUnidentified
 
 	if result, err := ParseStatus("some wrong status"); err == nil || expected != result {
 		if err == nil {
@@ -26,7 +26,7 @@ func TestParseStatusUnidentified(t *testing.T) {
 
 func TestStatusIsValid(t *testing.T) {
 	expected := true
-	mockStatus := Created
+	mockStatus := StatusCreated
 
 	if result := mockStatus.Valid(); expected != result {
 		t.Errorf("Expected: %v, actual: %v", expected, result)
@@ -44,7 +44,7 @@ func TestStatusIsNotValid(t *testing.T) {
 
 func TestStatusIsNotValidWhenUnidentified(t *testing.T) {
 	expected := false
-	mockStatus := Unidentified
+	mockStatus := StatusUnidentified
 
 	if result := mockStatus.Valid(); expected != result {
 		t.Errorf("Expected: %v, actual: %v", expected, result)
