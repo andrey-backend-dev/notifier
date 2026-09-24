@@ -10,6 +10,7 @@ const (
 	StatusCreated
 	StatusDelivering
 	StatusDelivered
+
 	lastStatus
 )
 
@@ -29,5 +30,31 @@ func ParseStatus(status string) (Status, error) {
 		return StatusDelivered, nil
 	default:
 		return StatusUnidentified, fmt.Errorf("unknown status: %q", status)
+	}
+}
+
+func (s Status) IsFinal() bool {
+	switch s {
+	case StatusFailed, StatusDelivered:
+		return true
+	default:
+		return false
+	}
+}
+
+func (s Status) String() string {
+	switch s {
+	case StatusUnidentified:
+		return "unidentified"
+	case StatusFailed:
+		return "failed"
+	case StatusCreated:
+		return "created"
+	case StatusDelivering:
+		return "delivering"
+	case StatusDelivered:
+		return "delivered"
+	default:
+		return fmt.Sprintf("Status(%d)", s)
 	}
 }

@@ -50,3 +50,36 @@ func TestStatusIsNotValidWhenUnidentified(t *testing.T) {
 		t.Errorf("Expected: %v, actual: %v", expected, result)
 	}
 }
+
+func TestIsFinalTrue(t *testing.T) {
+	expected := true
+
+	if result := StatusDelivered.IsFinal(); result != expected {
+		t.Errorf("Expected: %t, actual: %t", expected, result)
+	}
+}
+
+func TestIsFinalFalse(t *testing.T) {
+	expected := false
+
+	if result := StatusDelivering.IsFinal(); result != expected {
+		t.Errorf("Expected: %t, actual: %t", expected, result)
+	}
+}
+
+func TestStringViewPositive(t *testing.T) {
+	expected := "failed"
+
+	if result := StatusFailed.String(); result != expected {
+		t.Errorf("Expected: %s, actual: %s", expected, result)
+	}
+}
+
+func TestStringViewNegative(t *testing.T) {
+	expected := "Status(67)"
+	var mockStatus Status = 67
+
+	if result := mockStatus.String(); result != expected {
+		t.Errorf("Expected: %s, actual: %s", expected, result)
+	}
+}
