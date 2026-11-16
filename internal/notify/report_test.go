@@ -33,3 +33,20 @@ func extractContentFromFile(path string) (content string, err error) {
 
 	return string(byteContent), err
 }
+
+func TestReport(t *testing.T) {
+	notification1 := Notification{Channel: "email", Status: StatusUnidentified}
+	notification2 := Notification{Channel: "push", Status: StatusDelivered}
+	notification3 := Notification{Channel: "sms", Status: StatusCreated}
+	notification4 := Notification{Channel: "sms", Status: StatusCreated}
+	notification5 := Notification{Channel: "push", Status: StatusFailed}
+	list := []Notification{notification1, notification2, notification3, notification4, notification5}
+	expected := `email     unidentified=1    
+push      delivered=1    failed=1    
+sms       created=2    
+`
+
+	if result := Report(list); result != expected {
+		t.Fatalf("Expected: \n%s, actual: \n%s", expected, result)
+	}
+}

@@ -8,6 +8,7 @@ type Notification struct {
 	Body      string
 	Status    Status
 	Attempts  uint32
+	Channel   string
 }
 
 func (n *Notification) Retry() {
