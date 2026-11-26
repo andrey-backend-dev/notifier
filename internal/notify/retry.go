@@ -17,21 +17,29 @@ func WithRetry(inner SendFunc, attempts int, latency time.Duration) SendFunc {
 
 	return func(n Notification) (err error) {
 		var i int
+		errs := make([]error, attempts)
 
 		defer func() {
 			slog.Debug("Отправка завершена", "id", n.ID, "attempts", i+1, "err", err)
 		}()
 
+		var re *RetryableError
 		for i = range attempts {
 			if err = inner(n); err == nil {
 				return nil
 			}
 
+			if !errors.As(err, &re) {
+				return err
+			}
+
+			errs[i] = err
+
 			if attempts > i+1 {
-				time.Sleep(latency)
+				time.Sleep(re.After)
 			}
 		}
 
-		return err
+		return errors.Join(errs...)
 	}
 }
